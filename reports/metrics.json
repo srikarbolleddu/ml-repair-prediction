@@ -1,0 +1,154 @@
+{
+  "dataset": {
+    "name": "AI4I 2020 Predictive Maintenance (synthetic)",
+    "rows": 10000,
+    "positive_rate": 0.0339,
+    "positive_class": "failure",
+    "split": {
+      "development_5fold_cv": 8000,
+      "test": 2000
+    },
+    "excluded_columns": [
+      "TWF, HDF, PWF, OSF, RNF (failure-mode flags: target leakage)"
+    ]
+  },
+  "costs": {
+    "false_alarm": 1000,
+    "repair": 10000,
+    "replacement": 40000
+  },
+  "final_model": "Gradient boosting",
+  "threshold": 0.003,
+  "test": {
+    "recall": 0.9412,
+    "precision": 0.3048,
+    "roc_auc": 0.9784,
+    "pr_auc": 0.8955,
+    "false_alarms_per_1000": 73.0,
+    "cost_per_1000": 473000,
+    "savings_vs_no_model": 0.6522,
+    "tn": 1786,
+    "fp": 146,
+    "fn": 4,
+    "tp": 64
+  },
+  "comparison": {
+    "Logistic regression": {
+      "threshold": 0.038,
+      "cross_validation": {
+        "recall": 0.8229,
+        "precision": 0.1752,
+        "roc_auc": 0.9182,
+        "pr_auc": 0.4895,
+        "false_alarms_per_1000": 131.2,
+        "cost_per_1000": 650000,
+        "savings_vs_no_model": 0.5203,
+        "tn": 6679,
+        "fp": 1050,
+        "fn": 48,
+        "tp": 223
+      },
+      "test": {
+        "recall": 0.8235,
+        "precision": 0.186,
+        "roc_auc": 0.9303,
+        "pr_auc": 0.4603,
+        "false_alarms_per_1000": 122.5,
+        "cost_per_1000": 642500,
+        "savings_vs_no_model": 0.5276,
+        "tn": 1687,
+        "fp": 245,
+        "fn": 12,
+        "tp": 56
+      }
+    },
+    "Neural network (MLP)": {
+      "threshold": 0.038,
+      "cross_validation": {
+        "recall": 0.9004,
+        "precision": 0.2255,
+        "roc_auc": 0.9595,
+        "pr_auc": 0.6885,
+        "false_alarms_per_1000": 104.8,
+        "cost_per_1000": 544750,
+        "savings_vs_no_model": 0.598,
+        "tn": 6891,
+        "fp": 838,
+        "fn": 27,
+        "tp": 244
+      },
+      "test": {
+        "recall": 0.8971,
+        "precision": 0.2013,
+        "roc_auc": 0.9632,
+        "pr_auc": 0.6681,
+        "false_alarms_per_1000": 121.0,
+        "cost_per_1000": 566000,
+        "savings_vs_no_model": 0.5838,
+        "tn": 1690,
+        "fp": 242,
+        "fn": 7,
+        "tp": 61
+      }
+    },
+    "Gradient boosting": {
+      "threshold": 0.003,
+      "cross_validation": {
+        "recall": 0.9336,
+        "precision": 0.3519,
+        "roc_auc": 0.9752,
+        "pr_auc": 0.8792,
+        "false_alarms_per_1000": 58.2,
+        "cost_per_1000": 464500,
+        "savings_vs_no_model": 0.6572,
+        "tn": 7263,
+        "fp": 466,
+        "fn": 18,
+        "tp": 253
+      },
+      "test": {
+        "recall": 0.9412,
+        "precision": 0.3048,
+        "roc_auc": 0.9784,
+        "pr_auc": 0.8955,
+        "false_alarms_per_1000": 73.0,
+        "cost_per_1000": 473000,
+        "savings_vs_no_model": 0.6522,
+        "tn": 1786,
+        "fp": 146,
+        "fn": 4,
+        "tp": 64
+      }
+    },
+    "Gradient boosting, raw sensors only": {
+      "threshold": 0.002,
+      "cross_validation": {
+        "recall": 0.9151,
+        "precision": 0.3307,
+        "roc_auc": 0.9687,
+        "pr_auc": 0.7979,
+        "false_alarms_per_1000": 62.8,
+        "cost_per_1000": 487750,
+        "savings_vs_no_model": 0.64,
+        "tn": 7227,
+        "fp": 502,
+        "fn": 23,
+        "tp": 248
+      },
+      "test": {
+        "recall": 0.9118,
+        "precision": 0.31,
+        "roc_auc": 0.975,
+        "pr_auc": 0.8545,
+        "false_alarms_per_1000": 69.0,
+        "cost_per_1000": 499000,
+        "savings_vs_no_model": 0.6331,
+        "tn": 1794,
+        "fp": 138,
+        "fn": 6,
+        "tp": 62
+      }
+    }
+  },
+  "model_version": "gradient-517c5bea"
+}

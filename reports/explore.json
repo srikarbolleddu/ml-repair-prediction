@@ -1,0 +1,746 @@
+{
+  "model_comparison": [
+    {
+      "model": "Logistic regression",
+      "recall": 0.8235,
+      "precision": 0.186,
+      "roc_auc": 0.9303,
+      "pr_auc": 0.4603,
+      "false_alarms_per_1000": 122.5,
+      "cost_per_1000": 642500,
+      "savings_vs_no_model": 0.5276,
+      "tn": 1687,
+      "fp": 245,
+      "fn": 12,
+      "tp": 56,
+      "threshold": 0.038
+    },
+    {
+      "model": "Neural network (MLP)",
+      "recall": 0.8971,
+      "precision": 0.2013,
+      "roc_auc": 0.9632,
+      "pr_auc": 0.6681,
+      "false_alarms_per_1000": 121.0,
+      "cost_per_1000": 566000,
+      "savings_vs_no_model": 0.5838,
+      "tn": 1690,
+      "fp": 242,
+      "fn": 7,
+      "tp": 61,
+      "threshold": 0.038
+    },
+    {
+      "model": "Gradient boosting",
+      "recall": 0.9412,
+      "precision": 0.3048,
+      "roc_auc": 0.9784,
+      "pr_auc": 0.8955,
+      "false_alarms_per_1000": 73.0,
+      "cost_per_1000": 473000,
+      "savings_vs_no_model": 0.6522,
+      "tn": 1786,
+      "fp": 146,
+      "fn": 4,
+      "tp": 64,
+      "threshold": 0.003
+    },
+    {
+      "model": "Gradient boosting, raw sensors only",
+      "recall": 0.9118,
+      "precision": 0.31,
+      "roc_auc": 0.975,
+      "pr_auc": 0.8545,
+      "false_alarms_per_1000": 69.0,
+      "cost_per_1000": 499000,
+      "savings_vs_no_model": 0.6331,
+      "tn": 1794,
+      "fp": 138,
+      "fn": 6,
+      "tp": 62,
+      "threshold": 0.002
+    }
+  ],
+  "savings_curve": [
+    {
+      "threshold": 0.002,
+      "Logistic regression": 0.254,
+      "Neural network (MLP)": 0.3871,
+      "Gradient boosting": 0.6526,
+      "Gradient boosting, raw sensors only": 0.6331
+    },
+    {
+      "threshold": 0.004,
+      "Logistic regression": 0.3551,
+      "Neural network (MLP)": 0.468,
+      "Gradient boosting": 0.6338,
+      "Gradient boosting, raw sensors only": 0.6452
+    },
+    {
+      "threshold": 0.006,
+      "Logistic regression": 0.4048,
+      "Neural network (MLP)": 0.4849,
+      "Gradient boosting": 0.643,
+      "Gradient boosting, raw sensors only": 0.6283
+    },
+    {
+      "threshold": 0.008,
+      "Logistic regression": 0.4346,
+      "Neural network (MLP)": 0.5132,
+      "Gradient boosting": 0.6496,
+      "Gradient boosting, raw sensors only": 0.6327
+    },
+    {
+      "threshold": 0.01,
+      "Logistic regression": 0.4592,
+      "Neural network (MLP)": 0.5349,
+      "Gradient boosting": 0.6408,
+      "Gradient boosting, raw sensors only": 0.6132
+    },
+    {
+      "threshold": 0.012,
+      "Logistic regression": 0.4842,
+      "Neural network (MLP)": 0.5507,
+      "Gradient boosting": 0.643,
+      "Gradient boosting, raw sensors only": 0.6154
+    },
+    {
+      "threshold": 0.014,
+      "Logistic regression": 0.4904,
+      "Neural network (MLP)": 0.5548,
+      "Gradient boosting": 0.6452,
+      "Gradient boosting, raw sensors only": 0.6184
+    },
+    {
+      "threshold": 0.016,
+      "Logistic regression": 0.5114,
+      "Neural network (MLP)": 0.5673,
+      "Gradient boosting": 0.6474,
+      "Gradient boosting, raw sensors only": 0.6191
+    },
+    {
+      "threshold": 0.018,
+      "Logistic regression": 0.5261,
+      "Neural network (MLP)": 0.5779,
+      "Gradient boosting": 0.65,
+      "Gradient boosting, raw sensors only": 0.6202
+    },
+    {
+      "threshold": 0.02,
+      "Logistic regression": 0.5397,
+      "Neural network (MLP)": 0.5772,
+      "Gradient boosting": 0.6404,
+      "Gradient boosting, raw sensors only": 0.6206
+    },
+    {
+      "threshold": 0.022,
+      "Logistic regression": 0.5357,
+      "Neural network (MLP)": 0.5824,
+      "Gradient boosting": 0.6408,
+      "Gradient boosting, raw sensors only": 0.6213
+    },
+    {
+      "threshold": 0.024,
+      "Logistic regression": 0.5327,
+      "Neural network (MLP)": 0.5901,
+      "Gradient boosting": 0.643,
+      "Gradient boosting, raw sensors only": 0.6103
+    },
+    {
+      "threshold": 0.026,
+      "Logistic regression": 0.5342,
+      "Neural network (MLP)": 0.5967,
+      "Gradient boosting": 0.6449,
+      "Gradient boosting, raw sensors only": 0.611
+    },
+    {
+      "threshold": 0.028,
+      "Logistic regression": 0.5415,
+      "Neural network (MLP)": 0.5904,
+      "Gradient boosting": 0.6463,
+      "Gradient boosting, raw sensors only": 0.6118
+    },
+    {
+      "threshold": 0.03,
+      "Logistic regression": 0.5393,
+      "Neural network (MLP)": 0.5934,
+      "Gradient boosting": 0.6467,
+      "Gradient boosting, raw sensors only": 0.6125
+    },
+    {
+      "threshold": 0.032,
+      "Logistic regression": 0.5463,
+      "Neural network (MLP)": 0.596,
+      "Gradient boosting": 0.6482,
+      "Gradient boosting, raw sensors only": 0.6129
+    },
+    {
+      "threshold": 0.034,
+      "Logistic regression": 0.5397,
+      "Neural network (MLP)": 0.589,
+      "Gradient boosting": 0.6493,
+      "Gradient boosting, raw sensors only": 0.614
+    },
+    {
+      "threshold": 0.036,
+      "Logistic regression": 0.5441,
+      "Neural network (MLP)": 0.593,
+      "Gradient boosting": 0.6382,
+      "Gradient boosting, raw sensors only": 0.6147
+    },
+    {
+      "threshold": 0.038,
+      "Logistic regression": 0.5276,
+      "Neural network (MLP)": 0.5838,
+      "Gradient boosting": 0.639,
+      "Gradient boosting, raw sensors only": 0.6147
+    },
+    {
+      "threshold": 0.04,
+      "Logistic regression": 0.5324,
+      "Neural network (MLP)": 0.586,
+      "Gradient boosting": 0.6397,
+      "Gradient boosting, raw sensors only": 0.6147
+    },
+    {
+      "threshold": 0.042,
+      "Logistic regression": 0.5338,
+      "Neural network (MLP)": 0.5787,
+      "Gradient boosting": 0.6397,
+      "Gradient boosting, raw sensors only": 0.6151
+    },
+    {
+      "threshold": 0.044,
+      "Logistic regression": 0.5257,
+      "Neural network (MLP)": 0.5816,
+      "Gradient boosting": 0.6404,
+      "Gradient boosting, raw sensors only": 0.6151
+    },
+    {
+      "threshold": 0.046,
+      "Logistic regression": 0.5305,
+      "Neural network (MLP)": 0.5724,
+      "Gradient boosting": 0.6408,
+      "Gradient boosting, raw sensors only": 0.6154
+    },
+    {
+      "threshold": 0.048,
+      "Logistic regression": 0.532,
+      "Neural network (MLP)": 0.575,
+      "Gradient boosting": 0.6412,
+      "Gradient boosting, raw sensors only": 0.6044
+    },
+    {
+      "threshold": 0.05,
+      "Logistic regression": 0.5357,
+      "Neural network (MLP)": 0.5662,
+      "Gradient boosting": 0.6301,
+      "Gradient boosting, raw sensors only": 0.6044
+    },
+    {
+      "threshold": 0.06,
+      "Logistic regression": 0.5357,
+      "Neural network (MLP)": 0.5779,
+      "Gradient boosting": 0.6206,
+      "Gradient boosting, raw sensors only": 0.5945
+    },
+    {
+      "threshold": 0.08,
+      "Logistic regression": 0.507,
+      "Neural network (MLP)": 0.5772,
+      "Gradient boosting": 0.6114,
+      "Gradient boosting, raw sensors only": 0.5971
+    },
+    {
+      "threshold": 0.1,
+      "Logistic regression": 0.4835,
+      "Neural network (MLP)": 0.5717,
+      "Gradient boosting": 0.6121,
+      "Gradient boosting, raw sensors only": 0.5974
+    },
+    {
+      "threshold": 0.12,
+      "Logistic regression": 0.4801,
+      "Neural network (MLP)": 0.5772,
+      "Gradient boosting": 0.6151,
+      "Gradient boosting, raw sensors only": 0.5875
+    },
+    {
+      "threshold": 0.14,
+      "Logistic regression": 0.4187,
+      "Neural network (MLP)": 0.5816,
+      "Gradient boosting": 0.6151,
+      "Gradient boosting, raw sensors only": 0.5776
+    },
+    {
+      "threshold": 0.16,
+      "Logistic regression": 0.3772,
+      "Neural network (MLP)": 0.575,
+      "Gradient boosting": 0.6151,
+      "Gradient boosting, raw sensors only": 0.5779
+    },
+    {
+      "threshold": 0.18,
+      "Logistic regression": 0.3688,
+      "Neural network (MLP)": 0.5669,
+      "Gradient boosting": 0.6154,
+      "Gradient boosting, raw sensors only": 0.5676
+    },
+    {
+      "threshold": 0.2,
+      "Logistic regression": 0.361,
+      "Neural network (MLP)": 0.5599,
+      "Gradient boosting": 0.6154,
+      "Gradient boosting, raw sensors only": 0.568
+    },
+    {
+      "threshold": 0.22,
+      "Logistic regression": 0.3404,
+      "Neural network (MLP)": 0.5529,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5687
+    },
+    {
+      "threshold": 0.24,
+      "Logistic regression": 0.3301,
+      "Neural network (MLP)": 0.5434,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5581
+    },
+    {
+      "threshold": 0.26,
+      "Logistic regression": 0.3202,
+      "Neural network (MLP)": 0.5452,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5588
+    },
+    {
+      "threshold": 0.28,
+      "Logistic regression": 0.2879,
+      "Neural network (MLP)": 0.5357,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5588
+    },
+    {
+      "threshold": 0.3,
+      "Logistic regression": 0.2897,
+      "Neural network (MLP)": 0.5254,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5482
+    },
+    {
+      "threshold": 0.32,
+      "Logistic regression": 0.2585,
+      "Neural network (MLP)": 0.5151,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5485
+    },
+    {
+      "threshold": 0.34,
+      "Logistic regression": 0.2261,
+      "Neural network (MLP)": 0.4949,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5489
+    },
+    {
+      "threshold": 0.36,
+      "Logistic regression": 0.2265,
+      "Neural network (MLP)": 0.4956,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5489
+    },
+    {
+      "threshold": 0.38,
+      "Logistic regression": 0.2048,
+      "Neural network (MLP)": 0.4963,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5493
+    },
+    {
+      "threshold": 0.4,
+      "Logistic regression": 0.2048,
+      "Neural network (MLP)": 0.4871,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5493
+    },
+    {
+      "threshold": 0.42,
+      "Logistic regression": 0.1827,
+      "Neural network (MLP)": 0.4772,
+      "Gradient boosting": 0.6165,
+      "Gradient boosting, raw sensors only": 0.5496
+    },
+    {
+      "threshold": 0.44,
+      "Logistic regression": 0.1717,
+      "Neural network (MLP)": 0.4662,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5386
+    },
+    {
+      "threshold": 0.46,
+      "Logistic regression": 0.1614,
+      "Neural network (MLP)": 0.446,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5386
+    },
+    {
+      "threshold": 0.48,
+      "Logistic regression": 0.1507,
+      "Neural network (MLP)": 0.4357,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5386
+    },
+    {
+      "threshold": 0.5,
+      "Logistic regression": 0.1511,
+      "Neural network (MLP)": 0.4033,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5386
+    },
+    {
+      "threshold": 0.52,
+      "Logistic regression": 0.129,
+      "Neural network (MLP)": 0.393,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5386
+    },
+    {
+      "threshold": 0.54,
+      "Logistic regression": 0.1184,
+      "Neural network (MLP)": 0.3717,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5386
+    },
+    {
+      "threshold": 0.56,
+      "Logistic regression": 0.1188,
+      "Neural network (MLP)": 0.3283,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5386
+    },
+    {
+      "threshold": 0.58,
+      "Logistic regression": 0.1081,
+      "Neural network (MLP)": 0.3294,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5279
+    },
+    {
+      "threshold": 0.6,
+      "Logistic regression": 0.1081,
+      "Neural network (MLP)": 0.2857,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5279
+    },
+    {
+      "threshold": 0.62,
+      "Logistic regression": 0.1081,
+      "Neural network (MLP)": 0.2857,
+      "Gradient boosting": 0.6169,
+      "Gradient boosting, raw sensors only": 0.5066
+    },
+    {
+      "threshold": 0.64,
+      "Logistic regression": 0.1081,
+      "Neural network (MLP)": 0.286,
+      "Gradient boosting": 0.6059,
+      "Gradient boosting, raw sensors only": 0.5066
+    },
+    {
+      "threshold": 0.66,
+      "Logistic regression": 0.0971,
+      "Neural network (MLP)": 0.264,
+      "Gradient boosting": 0.6059,
+      "Gradient boosting, raw sensors only": 0.4956
+    },
+    {
+      "threshold": 0.68,
+      "Logistic regression": 0.0974,
+      "Neural network (MLP)": 0.2309,
+      "Gradient boosting": 0.6062,
+      "Gradient boosting, raw sensors only": 0.4849
+    },
+    {
+      "threshold": 0.7,
+      "Logistic regression": 0.0868,
+      "Neural network (MLP)": 0.2199,
+      "Gradient boosting": 0.6062,
+      "Gradient boosting, raw sensors only": 0.4853
+    },
+    {
+      "threshold": 0.72,
+      "Logistic regression": 0.0761,
+      "Neural network (MLP)": 0.1978,
+      "Gradient boosting": 0.6062,
+      "Gradient boosting, raw sensors only": 0.4632
+    },
+    {
+      "threshold": 0.74,
+      "Logistic regression": 0.0761,
+      "Neural network (MLP)": 0.1978,
+      "Gradient boosting": 0.6066,
+      "Gradient boosting, raw sensors only": 0.4632
+    },
+    {
+      "threshold": 0.76,
+      "Logistic regression": 0.0765,
+      "Neural network (MLP)": 0.1868,
+      "Gradient boosting": 0.6066,
+      "Gradient boosting, raw sensors only": 0.4632
+    },
+    {
+      "threshold": 0.78,
+      "Logistic regression": 0.0765,
+      "Neural network (MLP)": 0.1426,
+      "Gradient boosting": 0.5846,
+      "Gradient boosting, raw sensors only": 0.4522
+    },
+    {
+      "threshold": 0.8,
+      "Logistic regression": 0.0654,
+      "Neural network (MLP)": 0.1316,
+      "Gradient boosting": 0.5846,
+      "Gradient boosting, raw sensors only": 0.4522
+    },
+    {
+      "threshold": 0.82,
+      "Logistic regression": 0.0658,
+      "Neural network (MLP)": 0.1099,
+      "Gradient boosting": 0.5846,
+      "Gradient boosting, raw sensors only": 0.4301
+    },
+    {
+      "threshold": 0.84,
+      "Logistic regression": 0.0658,
+      "Neural network (MLP)": 0.0768,
+      "Gradient boosting": 0.5735,
+      "Gradient boosting, raw sensors only": 0.4191
+    },
+    {
+      "threshold": 0.86,
+      "Logistic regression": 0.0437,
+      "Neural network (MLP)": 0.0658,
+      "Gradient boosting": 0.5735,
+      "Gradient boosting, raw sensors only": 0.4191
+    },
+    {
+      "threshold": 0.88,
+      "Logistic regression": 0.0441,
+      "Neural network (MLP)": 0.0437,
+      "Gradient boosting": 0.5625,
+      "Gradient boosting, raw sensors only": 0.375
+    },
+    {
+      "threshold": 0.9,
+      "Logistic regression": 0.0221,
+      "Neural network (MLP)": 0.0437,
+      "Gradient boosting": 0.5515,
+      "Gradient boosting, raw sensors only": 0.3529
+    }
+  ],
+  "threshold_sweep": [
+    {
+      "threshold": 0.05,
+      "tn": 1906,
+      "fp": 26,
+      "fn": 10,
+      "tp": 58
+    },
+    {
+      "threshold": 0.1,
+      "tn": 1917,
+      "fp": 15,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.15,
+      "tn": 1925,
+      "fp": 7,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.2,
+      "tn": 1926,
+      "fp": 6,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.25,
+      "tn": 1929,
+      "fp": 3,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.3,
+      "tn": 1929,
+      "fp": 3,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.35,
+      "tn": 1929,
+      "fp": 3,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.4,
+      "tn": 1929,
+      "fp": 3,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.45,
+      "tn": 1930,
+      "fp": 2,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.5,
+      "tn": 1930,
+      "fp": 2,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.55,
+      "tn": 1930,
+      "fp": 2,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.6,
+      "tn": 1930,
+      "fp": 2,
+      "fn": 12,
+      "tp": 56
+    },
+    {
+      "threshold": 0.65,
+      "tn": 1930,
+      "fp": 2,
+      "fn": 13,
+      "tp": 55
+    },
+    {
+      "threshold": 0.7,
+      "tn": 1931,
+      "fp": 1,
+      "fn": 13,
+      "tp": 55
+    },
+    {
+      "threshold": 0.75,
+      "tn": 1932,
+      "fp": 0,
+      "fn": 13,
+      "tp": 55
+    },
+    {
+      "threshold": 0.8,
+      "tn": 1932,
+      "fp": 0,
+      "fn": 15,
+      "tp": 53
+    },
+    {
+      "threshold": 0.85,
+      "tn": 1932,
+      "fp": 0,
+      "fn": 16,
+      "tp": 52
+    },
+    {
+      "threshold": 0.9,
+      "tn": 1932,
+      "fp": 0,
+      "fn": 18,
+      "tp": 50
+    },
+    {
+      "threshold": 0.95,
+      "tn": 1932,
+      "fp": 0,
+      "fn": 20,
+      "tp": 48
+    }
+  ],
+  "feature_importance": [
+    {
+      "field": "rotational_speed_rpm",
+      "label": "Rotational speed",
+      "importance": 0.4444
+    },
+    {
+      "field": "temp_diff_k",
+      "label": "Process \u2212 air temperature (derived)",
+      "importance": 0.3506
+    },
+    {
+      "field": "strain_min_nm",
+      "label": "Tool wear \u00d7 torque (derived)",
+      "importance": 0.2055
+    },
+    {
+      "field": "power_w",
+      "label": "Mechanical power (derived)",
+      "importance": 0.1518
+    },
+    {
+      "field": "machine_type",
+      "label": "Product quality variant",
+      "importance": 0.0568
+    },
+    {
+      "field": "tool_wear_min",
+      "label": "Tool wear",
+      "importance": 0.051
+    },
+    {
+      "field": "torque_nm",
+      "label": "Torque",
+      "importance": 0.013
+    },
+    {
+      "field": "air_temp_k",
+      "label": "Air temperature",
+      "importance": -0.0027
+    },
+    {
+      "field": "process_temp_k",
+      "label": "Process temperature",
+      "importance": -0.0041
+    }
+  ],
+  "failure_rate_by_wear": [
+    {
+      "label": "0\u201350 min",
+      "value": 0.0217
+    },
+    {
+      "label": "50\u2013100 min",
+      "value": 0.0233
+    },
+    {
+      "label": "100\u2013150 min",
+      "value": 0.0218
+    },
+    {
+      "label": "150\u2013200 min",
+      "value": 0.029
+    },
+    {
+      "label": "200\u2013260 min",
+      "value": 0.1549
+    }
+  ]
+}

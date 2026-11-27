@@ -1,0 +1,23 @@
+{
+  "model_version": "gradient-517c5bea",
+  "model": "Gradient boosting",
+  "failure_threshold": 0.003,
+  "baseline": {
+    "air_temp_k": 300.1,
+    "process_temp_k": 310.1,
+    "rotational_speed_rpm": 1503.0,
+    "torque_nm": 40.1,
+    "tool_wear_min": 107.0,
+    "machine_type": "L"
+  },
+  "costs": {
+    "false_alarm": 1000,
+    "repair": 10000,
+    "replacement": 40000
+  },
+  "dataset": {
+    "url": "https://archive.ics.uci.edu/static/public/601/ai4i+2020+predictive+maintenance+dataset.zip",
+    "sha256": "f601f14294bcf190f9d720676b7f0aea46a26cde9ab8ebc7b4f8174d9d26b252",
+    "license": "CC BY 4.0"
+  }
+}
