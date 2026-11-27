@@ -336,7 +336,11 @@ def main() -> None:
         for cut in cuts
     ]
     sweep = []
-    for cut in np.round(np.linspace(0.05, 0.95, 19), 2):
+    # Include the chosen cutoff and fine low steps: with a 40x miss penalty the action is near zero.
+    sweep_cuts = sorted(
+        {threshold, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9}
+    )
+    for cut in sweep_cuts:
         counts = maintenance_cost(yt, test_p >= cut)
         sweep.append({"threshold": float(cut), **{k: counts[k] for k in ("tn", "fp", "fn", "tp")}})
 
