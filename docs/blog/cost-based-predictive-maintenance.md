@@ -3,7 +3,7 @@ slug: cost-based-predictive-maintenance
 title: When a missed failure costs 40× a false alarm, 99% accuracy is the wrong goal
 excerpt: A predictive-maintenance model with 99.3% accuracy cost more than one with 92.5%. Choosing models and cutoffs by what mistakes actually cost, plus physics features, and the validation split that fooled me.
 tags: Machine Learning, Predictive Maintenance, Cost-Sensitive Learning, scikit-learn, Feature Engineering
-readTimeMinutes: 8
+readTimeMinutes: 6
 indexForRag: true
 ---
 
