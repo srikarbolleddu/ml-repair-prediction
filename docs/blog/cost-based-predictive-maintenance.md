@@ -54,6 +54,7 @@ def maintenance_cost(y_true, flagged):
     tn, fp, fn, tp = confusion_matrix(y_true, flagged, labels=[0, 1]).ravel()
     return fp * 1_000 + tp * 10_000 + fn * 40_000
 
+
 def cheapest_threshold(y_true, p):
     # fine steps near zero: with a 40x miss penalty, the best cutoff is tiny
     grid = np.unique(np.concatenate([np.linspace(0.001, 0.05, 50), np.linspace(0.05, 0.99, 95)]))
@@ -113,7 +114,9 @@ hyperparameters, cutoff). Each of those 8,000 machines (about 270 failures) is s
 that never saw it:
 
 ```python
-oof = cross_val_predict(pipeline, x_dev, y_dev, cv=StratifiedKFold(5, shuffle=True), method="predict_proba")[:, 1]
+oof = cross_val_predict(
+    pipeline, x_dev, y_dev, cv=StratifiedKFold(5, shuffle=True), method="predict_proba"
+)[:, 1]
 t = cheapest_threshold(y_dev, oof)
 ```
 
