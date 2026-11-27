@@ -97,6 +97,7 @@ def build_explore(explore: dict[str, Any], metrics: dict[str, Any]) -> dict[str,
                 "positive_label": "Fails",
                 "negative_label": "Keeps running",
                 "selected": metrics["threshold"],
+                "selected_label": "chosen by cross-validation",
                 "sweep": explore["threshold_sweep"],
             },
             {

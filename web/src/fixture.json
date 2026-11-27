@@ -1,1229 +1,1188 @@
 {
-  "schema": {
-    "contract": "ml-demo-kit/v1",
-    "title": "Is this machine about to fail?",
-    "description": "Change the sensor readings and see the failure risk, whether the machine should be inspected, and which readings drive the decision.",
-    "task": "classification",
-    "target": "failure",
-    "groups": [
-      {
-        "id": "machine",
-        "label": "Machine"
-      },
-      {
-        "id": "conditions",
-        "label": "Temperatures"
-      },
-      {
-        "id": "operation",
-        "label": "Operation"
-      }
-    ],
-    "fields": [
-      {
-        "name": "machine_type",
-        "label": "Product quality variant",
-        "kind": "category",
-        "group": "machine",
-        "help": "Quality variant of the product being machined (low, medium or high).",
-        "optional": false,
-        "options": [
-          {
-            "value": "L",
-            "label": "Low"
-          },
-          {
-            "value": "M",
-            "label": "Medium"
-          },
-          {
-            "value": "H",
-            "label": "High"
-          }
-        ]
-      },
-      {
-        "name": "air_temp_k",
-        "label": "Air temperature",
-        "kind": "number",
-        "group": "conditions",
-        "help": "Ambient air temperature.",
-        "optional": false,
-        "min": 294,
-        "max": 306,
-        "step": 0.1,
-        "unit": "K"
-      },
-      {
-        "name": "process_temp_k",
-        "label": "Process temperature",
-        "kind": "number",
-        "group": "conditions",
-        "help": "Temperature of the machining process.",
-        "optional": false,
-        "min": 304,
-        "max": 316,
-        "step": 0.1,
-        "unit": "K"
-      },
-      {
-        "name": "rotational_speed_rpm",
-        "label": "Rotational speed",
-        "kind": "number",
-        "group": "operation",
-        "help": "Spindle speed.",
-        "optional": false,
-        "min": 1100,
-        "max": 3000,
-        "step": 1,
-        "unit": "rpm"
-      },
-      {
-        "name": "torque_nm",
-        "label": "Torque",
-        "kind": "number",
-        "group": "operation",
-        "help": "Torque on the spindle.",
-        "optional": false,
-        "min": 0,
-        "max": 80,
-        "step": 0.1,
-        "unit": "Nm"
-      },
-      {
-        "name": "tool_wear_min",
-        "label": "Tool wear",
-        "kind": "number",
-        "group": "operation",
-        "help": "Minutes the current tool has been in use.",
-        "optional": false,
-        "min": 0,
-        "max": 260,
-        "step": 1,
-        "unit": "min"
-      }
-    ],
-    "model_version": "gradient-517c5bea",
-    "threshold": 0.003
-  },
-  "samples": [
-    {
-      "title": "Healthy: new tool, normal load",
-      "inputs": {
-        "machine_type": "L",
-        "air_temp_k": 297,
-        "process_temp_k": 307.7,
-        "rotational_speed_rpm": 1447,
-        "torque_nm": 46.4,
-        "tool_wear_min": 8
-      },
-      "actual": "kept running"
-    },
-    {
-      "title": "Healthy: worn tool, light load",
-      "inputs": {
-        "machine_type": "L",
-        "air_temp_k": 298.9,
-        "process_temp_k": 310.2,
-        "rotational_speed_rpm": 1411,
-        "torque_nm": 46.5,
-        "tool_wear_min": 202
-      },
-      "actual": "kept running"
-    },
-    {
-      "title": "False alarm: flagged, but it kept running",
-      "inputs": {
-        "machine_type": "M",
-        "air_temp_k": 297.2,
-        "process_temp_k": 308.2,
-        "rotational_speed_rpm": 1405,
-        "torque_nm": 42.5,
-        "tool_wear_min": 204
-      },
-      "actual": "kept running"
-    },
-    {
-      "title": "Failed: worn tool under high torque",
-      "inputs": {
-        "machine_type": "L",
-        "air_temp_k": 298,
-        "process_temp_k": 308.3,
-        "rotational_speed_rpm": 1362,
-        "torque_nm": 56.8,
-        "tool_wear_min": 216
-      },
-      "actual": "failed"
-    },
-    {
-      "title": "Failed: overheating (small temperature gap)",
-      "inputs": {
-        "machine_type": "M",
-        "air_temp_k": 301.7,
-        "process_temp_k": 309.8,
-        "rotational_speed_rpm": 1284,
-        "torque_nm": 68.2,
-        "tool_wear_min": 111
-      },
-      "actual": "failed"
-    },
-    {
-      "title": "Failed, but the model missed it",
-      "inputs": {
-        "machine_type": "M",
-        "air_temp_k": 299.7,
-        "process_temp_k": 309.3,
-        "rotational_speed_rpm": 1399,
-        "torque_nm": 41.9,
-        "tool_wear_min": 221
-      },
-      "actual": "failed"
-    }
+ "schema": {
+  "contract": "ml-demo-kit/v1",
+  "title": "Is this machine about to fail?",
+  "description": "Change the sensor readings and see the failure risk, whether the machine should be inspected, and which readings drive the decision.",
+  "task": "classification",
+  "target": "failure",
+  "groups": [
+   {
+    "id": "machine",
+    "label": "Machine"
+   },
+   {
+    "id": "conditions",
+    "label": "Temperatures"
+   },
+   {
+    "id": "operation",
+    "label": "Operation"
+   }
   ],
-  "explore": {
-    "contract": "ml-demo-kit/v1",
-    "headline": [
-      {
-        "label": "Maintenance cost saved",
-        "value": 0.6522,
-        "format": "percent",
-        "hint": "vs running machines to failure"
-      },
-      {
-        "label": "Failures caught",
-        "value": 0.9412,
-        "format": "percent",
-        "hint": "64 of 68 on held-out machines"
-      },
-      {
-        "label": "False alarms",
-        "value": 73.0,
-        "format": "number",
-        "hint": "inspections per 1,000 machines"
-      },
-      {
-        "label": "PR-AUC",
-        "value": 0.8955,
-        "format": "number",
-        "hint": "ranking quality for failures"
-      }
-    ],
-    "charts": [
-      {
-        "id": "savings",
-        "kind": "line",
-        "title": "Choosing the cutoff by maintenance cost",
-        "caption": "An inspection costs $1,000, repairing a machine caught in time $10,000, and replacing one that fails unnoticed $40,000: a miss costs 40x a false alarm. So the cheapest cutoff flags machines at very low risk. Drag the slider to see each model's savings at every cutoff (held-out machines).",
-        "x": {
-          "key": "per_1000",
-          "label": "Flag when failure risk exceeds (in 1,000)",
-          "scale": "log"
-        },
-        "y": {
-          "label": "Cost saved vs running to failure",
-          "format": "percent"
-        },
-        "series": [
-          {
-            "key": "Logistic regression",
-            "label": "Logistic regression"
-          },
-          {
-            "key": "Neural network (MLP)",
-            "label": "Neural network (MLP)"
-          },
-          {
-            "key": "Gradient boosting, raw sensors only",
-            "label": "Gradient boosting, raw sensors only"
-          },
-          {
-            "key": "Gradient boosting",
-            "label": "Gradient boosting"
-          }
-        ],
-        "points": [
-          {
-            "per_1000": 2.0,
-            "Logistic regression": 0.254,
-            "Neural network (MLP)": 0.3871,
-            "Gradient boosting, raw sensors only": 0.6331,
-            "Gradient boosting": 0.6526
-          },
-          {
-            "per_1000": 4.0,
-            "Logistic regression": 0.3551,
-            "Neural network (MLP)": 0.468,
-            "Gradient boosting, raw sensors only": 0.6452,
-            "Gradient boosting": 0.6338
-          },
-          {
-            "per_1000": 6.0,
-            "Logistic regression": 0.4048,
-            "Neural network (MLP)": 0.4849,
-            "Gradient boosting, raw sensors only": 0.6283,
-            "Gradient boosting": 0.643
-          },
-          {
-            "per_1000": 8.0,
-            "Logistic regression": 0.4346,
-            "Neural network (MLP)": 0.5132,
-            "Gradient boosting, raw sensors only": 0.6327,
-            "Gradient boosting": 0.6496
-          },
-          {
-            "per_1000": 10.0,
-            "Logistic regression": 0.4592,
-            "Neural network (MLP)": 0.5349,
-            "Gradient boosting, raw sensors only": 0.6132,
-            "Gradient boosting": 0.6408
-          },
-          {
-            "per_1000": 12.0,
-            "Logistic regression": 0.4842,
-            "Neural network (MLP)": 0.5507,
-            "Gradient boosting, raw sensors only": 0.6154,
-            "Gradient boosting": 0.643
-          },
-          {
-            "per_1000": 14.0,
-            "Logistic regression": 0.4904,
-            "Neural network (MLP)": 0.5548,
-            "Gradient boosting, raw sensors only": 0.6184,
-            "Gradient boosting": 0.6452
-          },
-          {
-            "per_1000": 16.0,
-            "Logistic regression": 0.5114,
-            "Neural network (MLP)": 0.5673,
-            "Gradient boosting, raw sensors only": 0.6191,
-            "Gradient boosting": 0.6474
-          },
-          {
-            "per_1000": 18.0,
-            "Logistic regression": 0.5261,
-            "Neural network (MLP)": 0.5779,
-            "Gradient boosting, raw sensors only": 0.6202,
-            "Gradient boosting": 0.65
-          },
-          {
-            "per_1000": 20.0,
-            "Logistic regression": 0.5397,
-            "Neural network (MLP)": 0.5772,
-            "Gradient boosting, raw sensors only": 0.6206,
-            "Gradient boosting": 0.6404
-          },
-          {
-            "per_1000": 22.0,
-            "Logistic regression": 0.5357,
-            "Neural network (MLP)": 0.5824,
-            "Gradient boosting, raw sensors only": 0.6213,
-            "Gradient boosting": 0.6408
-          },
-          {
-            "per_1000": 24.0,
-            "Logistic regression": 0.5327,
-            "Neural network (MLP)": 0.5901,
-            "Gradient boosting, raw sensors only": 0.6103,
-            "Gradient boosting": 0.643
-          },
-          {
-            "per_1000": 26.0,
-            "Logistic regression": 0.5342,
-            "Neural network (MLP)": 0.5967,
-            "Gradient boosting, raw sensors only": 0.611,
-            "Gradient boosting": 0.6449
-          },
-          {
-            "per_1000": 28.0,
-            "Logistic regression": 0.5415,
-            "Neural network (MLP)": 0.5904,
-            "Gradient boosting, raw sensors only": 0.6118,
-            "Gradient boosting": 0.6463
-          },
-          {
-            "per_1000": 30.0,
-            "Logistic regression": 0.5393,
-            "Neural network (MLP)": 0.5934,
-            "Gradient boosting, raw sensors only": 0.6125,
-            "Gradient boosting": 0.6467
-          },
-          {
-            "per_1000": 32.0,
-            "Logistic regression": 0.5463,
-            "Neural network (MLP)": 0.596,
-            "Gradient boosting, raw sensors only": 0.6129,
-            "Gradient boosting": 0.6482
-          },
-          {
-            "per_1000": 34.0,
-            "Logistic regression": 0.5397,
-            "Neural network (MLP)": 0.589,
-            "Gradient boosting, raw sensors only": 0.614,
-            "Gradient boosting": 0.6493
-          },
-          {
-            "per_1000": 36.0,
-            "Logistic regression": 0.5441,
-            "Neural network (MLP)": 0.593,
-            "Gradient boosting, raw sensors only": 0.6147,
-            "Gradient boosting": 0.6382
-          },
-          {
-            "per_1000": 38.0,
-            "Logistic regression": 0.5276,
-            "Neural network (MLP)": 0.5838,
-            "Gradient boosting, raw sensors only": 0.6147,
-            "Gradient boosting": 0.639
-          },
-          {
-            "per_1000": 40.0,
-            "Logistic regression": 0.5324,
-            "Neural network (MLP)": 0.586,
-            "Gradient boosting, raw sensors only": 0.6147,
-            "Gradient boosting": 0.6397
-          },
-          {
-            "per_1000": 42.0,
-            "Logistic regression": 0.5338,
-            "Neural network (MLP)": 0.5787,
-            "Gradient boosting, raw sensors only": 0.6151,
-            "Gradient boosting": 0.6397
-          },
-          {
-            "per_1000": 44.0,
-            "Logistic regression": 0.5257,
-            "Neural network (MLP)": 0.5816,
-            "Gradient boosting, raw sensors only": 0.6151,
-            "Gradient boosting": 0.6404
-          },
-          {
-            "per_1000": 46.0,
-            "Logistic regression": 0.5305,
-            "Neural network (MLP)": 0.5724,
-            "Gradient boosting, raw sensors only": 0.6154,
-            "Gradient boosting": 0.6408
-          },
-          {
-            "per_1000": 48.0,
-            "Logistic regression": 0.532,
-            "Neural network (MLP)": 0.575,
-            "Gradient boosting, raw sensors only": 0.6044,
-            "Gradient boosting": 0.6412
-          },
-          {
-            "per_1000": 50.0,
-            "Logistic regression": 0.5357,
-            "Neural network (MLP)": 0.5662,
-            "Gradient boosting, raw sensors only": 0.6044,
-            "Gradient boosting": 0.6301
-          },
-          {
-            "per_1000": 60.0,
-            "Logistic regression": 0.5357,
-            "Neural network (MLP)": 0.5779,
-            "Gradient boosting, raw sensors only": 0.5945,
-            "Gradient boosting": 0.6206
-          },
-          {
-            "per_1000": 80.0,
-            "Logistic regression": 0.507,
-            "Neural network (MLP)": 0.5772,
-            "Gradient boosting, raw sensors only": 0.5971,
-            "Gradient boosting": 0.6114
-          },
-          {
-            "per_1000": 100.0,
-            "Logistic regression": 0.4835,
-            "Neural network (MLP)": 0.5717,
-            "Gradient boosting, raw sensors only": 0.5974,
-            "Gradient boosting": 0.6121
-          },
-          {
-            "per_1000": 120.0,
-            "Logistic regression": 0.4801,
-            "Neural network (MLP)": 0.5772,
-            "Gradient boosting, raw sensors only": 0.5875,
-            "Gradient boosting": 0.6151
-          },
-          {
-            "per_1000": 140.0,
-            "Logistic regression": 0.4187,
-            "Neural network (MLP)": 0.5816,
-            "Gradient boosting, raw sensors only": 0.5776,
-            "Gradient boosting": 0.6151
-          },
-          {
-            "per_1000": 160.0,
-            "Logistic regression": 0.3772,
-            "Neural network (MLP)": 0.575,
-            "Gradient boosting, raw sensors only": 0.5779,
-            "Gradient boosting": 0.6151
-          },
-          {
-            "per_1000": 180.0,
-            "Logistic regression": 0.3688,
-            "Neural network (MLP)": 0.5669,
-            "Gradient boosting, raw sensors only": 0.5676,
-            "Gradient boosting": 0.6154
-          },
-          {
-            "per_1000": 200.0,
-            "Logistic regression": 0.361,
-            "Neural network (MLP)": 0.5599,
-            "Gradient boosting, raw sensors only": 0.568,
-            "Gradient boosting": 0.6154
-          },
-          {
-            "per_1000": 220.0,
-            "Logistic regression": 0.3404,
-            "Neural network (MLP)": 0.5529,
-            "Gradient boosting, raw sensors only": 0.5687,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 240.0,
-            "Logistic regression": 0.3301,
-            "Neural network (MLP)": 0.5434,
-            "Gradient boosting, raw sensors only": 0.5581,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 260.0,
-            "Logistic regression": 0.3202,
-            "Neural network (MLP)": 0.5452,
-            "Gradient boosting, raw sensors only": 0.5588,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 280.0,
-            "Logistic regression": 0.2879,
-            "Neural network (MLP)": 0.5357,
-            "Gradient boosting, raw sensors only": 0.5588,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 300.0,
-            "Logistic regression": 0.2897,
-            "Neural network (MLP)": 0.5254,
-            "Gradient boosting, raw sensors only": 0.5482,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 320.0,
-            "Logistic regression": 0.2585,
-            "Neural network (MLP)": 0.5151,
-            "Gradient boosting, raw sensors only": 0.5485,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 340.0,
-            "Logistic regression": 0.2261,
-            "Neural network (MLP)": 0.4949,
-            "Gradient boosting, raw sensors only": 0.5489,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 360.0,
-            "Logistic regression": 0.2265,
-            "Neural network (MLP)": 0.4956,
-            "Gradient boosting, raw sensors only": 0.5489,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 380.0,
-            "Logistic regression": 0.2048,
-            "Neural network (MLP)": 0.4963,
-            "Gradient boosting, raw sensors only": 0.5493,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 400.0,
-            "Logistic regression": 0.2048,
-            "Neural network (MLP)": 0.4871,
-            "Gradient boosting, raw sensors only": 0.5493,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 420.0,
-            "Logistic regression": 0.1827,
-            "Neural network (MLP)": 0.4772,
-            "Gradient boosting, raw sensors only": 0.5496,
-            "Gradient boosting": 0.6165
-          },
-          {
-            "per_1000": 440.0,
-            "Logistic regression": 0.1717,
-            "Neural network (MLP)": 0.4662,
-            "Gradient boosting, raw sensors only": 0.5386,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 460.0,
-            "Logistic regression": 0.1614,
-            "Neural network (MLP)": 0.446,
-            "Gradient boosting, raw sensors only": 0.5386,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 480.0,
-            "Logistic regression": 0.1507,
-            "Neural network (MLP)": 0.4357,
-            "Gradient boosting, raw sensors only": 0.5386,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 500.0,
-            "Logistic regression": 0.1511,
-            "Neural network (MLP)": 0.4033,
-            "Gradient boosting, raw sensors only": 0.5386,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 520.0,
-            "Logistic regression": 0.129,
-            "Neural network (MLP)": 0.393,
-            "Gradient boosting, raw sensors only": 0.5386,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 540.0,
-            "Logistic regression": 0.1184,
-            "Neural network (MLP)": 0.3717,
-            "Gradient boosting, raw sensors only": 0.5386,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 560.0,
-            "Logistic regression": 0.1188,
-            "Neural network (MLP)": 0.3283,
-            "Gradient boosting, raw sensors only": 0.5386,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 580.0,
-            "Logistic regression": 0.1081,
-            "Neural network (MLP)": 0.3294,
-            "Gradient boosting, raw sensors only": 0.5279,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 600.0,
-            "Logistic regression": 0.1081,
-            "Neural network (MLP)": 0.2857,
-            "Gradient boosting, raw sensors only": 0.5279,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 620.0,
-            "Logistic regression": 0.1081,
-            "Neural network (MLP)": 0.2857,
-            "Gradient boosting, raw sensors only": 0.5066,
-            "Gradient boosting": 0.6169
-          },
-          {
-            "per_1000": 640.0,
-            "Logistic regression": 0.1081,
-            "Neural network (MLP)": 0.286,
-            "Gradient boosting, raw sensors only": 0.5066,
-            "Gradient boosting": 0.6059
-          },
-          {
-            "per_1000": 660.0,
-            "Logistic regression": 0.0971,
-            "Neural network (MLP)": 0.264,
-            "Gradient boosting, raw sensors only": 0.4956,
-            "Gradient boosting": 0.6059
-          },
-          {
-            "per_1000": 680.0,
-            "Logistic regression": 0.0974,
-            "Neural network (MLP)": 0.2309,
-            "Gradient boosting, raw sensors only": 0.4849,
-            "Gradient boosting": 0.6062
-          },
-          {
-            "per_1000": 700.0,
-            "Logistic regression": 0.0868,
-            "Neural network (MLP)": 0.2199,
-            "Gradient boosting, raw sensors only": 0.4853,
-            "Gradient boosting": 0.6062
-          },
-          {
-            "per_1000": 720.0,
-            "Logistic regression": 0.0761,
-            "Neural network (MLP)": 0.1978,
-            "Gradient boosting, raw sensors only": 0.4632,
-            "Gradient boosting": 0.6062
-          },
-          {
-            "per_1000": 740.0,
-            "Logistic regression": 0.0761,
-            "Neural network (MLP)": 0.1978,
-            "Gradient boosting, raw sensors only": 0.4632,
-            "Gradient boosting": 0.6066
-          },
-          {
-            "per_1000": 760.0,
-            "Logistic regression": 0.0765,
-            "Neural network (MLP)": 0.1868,
-            "Gradient boosting, raw sensors only": 0.4632,
-            "Gradient boosting": 0.6066
-          },
-          {
-            "per_1000": 780.0,
-            "Logistic regression": 0.0765,
-            "Neural network (MLP)": 0.1426,
-            "Gradient boosting, raw sensors only": 0.4522,
-            "Gradient boosting": 0.5846
-          },
-          {
-            "per_1000": 800.0,
-            "Logistic regression": 0.0654,
-            "Neural network (MLP)": 0.1316,
-            "Gradient boosting, raw sensors only": 0.4522,
-            "Gradient boosting": 0.5846
-          },
-          {
-            "per_1000": 820.0,
-            "Logistic regression": 0.0658,
-            "Neural network (MLP)": 0.1099,
-            "Gradient boosting, raw sensors only": 0.4301,
-            "Gradient boosting": 0.5846
-          },
-          {
-            "per_1000": 840.0,
-            "Logistic regression": 0.0658,
-            "Neural network (MLP)": 0.0768,
-            "Gradient boosting, raw sensors only": 0.4191,
-            "Gradient boosting": 0.5735
-          },
-          {
-            "per_1000": 860.0,
-            "Logistic regression": 0.0437,
-            "Neural network (MLP)": 0.0658,
-            "Gradient boosting, raw sensors only": 0.4191,
-            "Gradient boosting": 0.5735
-          },
-          {
-            "per_1000": 880.0,
-            "Logistic regression": 0.0441,
-            "Neural network (MLP)": 0.0437,
-            "Gradient boosting, raw sensors only": 0.375,
-            "Gradient boosting": 0.5625
-          },
-          {
-            "per_1000": 900.0,
-            "Logistic regression": 0.0221,
-            "Neural network (MLP)": 0.0437,
-            "Gradient boosting, raw sensors only": 0.3529,
-            "Gradient boosting": 0.5515
-          }
-        ]
-      },
-      {
-        "id": "threshold",
-        "kind": "threshold",
-        "title": "Inspections vs missed failures",
-        "caption": "Raise the cutoff and false alarms fall, but more failures slip through, and each miss costs $40,000.",
-        "positive_label": "Fails",
-        "negative_label": "Keeps running",
-        "selected": 0.003,
-        "sweep": [
-          {
-            "threshold": 0.05,
-            "tn": 1906,
-            "fp": 26,
-            "fn": 10,
-            "tp": 58
-          },
-          {
-            "threshold": 0.1,
-            "tn": 1917,
-            "fp": 15,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.15,
-            "tn": 1925,
-            "fp": 7,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.2,
-            "tn": 1926,
-            "fp": 6,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.25,
-            "tn": 1929,
-            "fp": 3,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.3,
-            "tn": 1929,
-            "fp": 3,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.35,
-            "tn": 1929,
-            "fp": 3,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.4,
-            "tn": 1929,
-            "fp": 3,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.45,
-            "tn": 1930,
-            "fp": 2,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.5,
-            "tn": 1930,
-            "fp": 2,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.55,
-            "tn": 1930,
-            "fp": 2,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.6,
-            "tn": 1930,
-            "fp": 2,
-            "fn": 12,
-            "tp": 56
-          },
-          {
-            "threshold": 0.65,
-            "tn": 1930,
-            "fp": 2,
-            "fn": 13,
-            "tp": 55
-          },
-          {
-            "threshold": 0.7,
-            "tn": 1931,
-            "fp": 1,
-            "fn": 13,
-            "tp": 55
-          },
-          {
-            "threshold": 0.75,
-            "tn": 1932,
-            "fp": 0,
-            "fn": 13,
-            "tp": 55
-          },
-          {
-            "threshold": 0.8,
-            "tn": 1932,
-            "fp": 0,
-            "fn": 15,
-            "tp": 53
-          },
-          {
-            "threshold": 0.85,
-            "tn": 1932,
-            "fp": 0,
-            "fn": 16,
-            "tp": 52
-          },
-          {
-            "threshold": 0.9,
-            "tn": 1932,
-            "fp": 0,
-            "fn": 18,
-            "tp": 50
-          },
-          {
-            "threshold": 0.95,
-            "tn": 1932,
-            "fp": 0,
-            "fn": 20,
-            "tp": 48
-          }
-        ]
-      },
-      {
-        "id": "models",
-        "kind": "table",
-        "title": "Which model saves the most?",
-        "caption": "Each model at its own cost-optimal cutoff, chosen by 5-fold cross-validation; held-out test results. Adding physics features (power, temperature gap, wear × torque) lifted gradient boosting's PR-AUC from 0.85 to 0.90.",
-        "columns": [
-          {
-            "key": "model",
-            "label": "Model"
-          },
-          {
-            "key": "savings_vs_no_model",
-            "label": "Cost saved",
-            "format": "percent"
-          },
-          {
-            "key": "recall",
-            "label": "Failures caught",
-            "format": "percent"
-          },
-          {
-            "key": "false_alarms_per_1000",
-            "label": "False alarms / 1,000",
-            "format": "number"
-          },
-          {
-            "key": "pr_auc",
-            "label": "PR-AUC",
-            "format": "number"
-          }
-        ],
-        "rows": [
-          {
-            "model": "Logistic regression",
-            "recall": 0.8235,
-            "precision": 0.186,
-            "roc_auc": 0.9303,
-            "pr_auc": 0.4603,
-            "false_alarms_per_1000": 122.5,
-            "cost_per_1000": 642500,
-            "savings_vs_no_model": 0.5276,
-            "tn": 1687,
-            "fp": 245,
-            "fn": 12,
-            "tp": 56,
-            "threshold": 0.038
-          },
-          {
-            "model": "Neural network (MLP)",
-            "recall": 0.8971,
-            "precision": 0.2013,
-            "roc_auc": 0.9632,
-            "pr_auc": 0.6681,
-            "false_alarms_per_1000": 121.0,
-            "cost_per_1000": 566000,
-            "savings_vs_no_model": 0.5838,
-            "tn": 1690,
-            "fp": 242,
-            "fn": 7,
-            "tp": 61,
-            "threshold": 0.038
-          },
-          {
-            "model": "Gradient boosting",
-            "recall": 0.9412,
-            "precision": 0.3048,
-            "roc_auc": 0.9784,
-            "pr_auc": 0.8955,
-            "false_alarms_per_1000": 73.0,
-            "cost_per_1000": 473000,
-            "savings_vs_no_model": 0.6522,
-            "tn": 1786,
-            "fp": 146,
-            "fn": 4,
-            "tp": 64,
-            "threshold": 0.003
-          },
-          {
-            "model": "Gradient boosting, raw sensors only",
-            "recall": 0.9118,
-            "precision": 0.31,
-            "roc_auc": 0.975,
-            "pr_auc": 0.8545,
-            "false_alarms_per_1000": 69.0,
-            "cost_per_1000": 499000,
-            "savings_vs_no_model": 0.6331,
-            "tn": 1794,
-            "fp": 138,
-            "fn": 6,
-            "tp": 62,
-            "threshold": 0.002
-          }
-        ],
-        "highlight": {
-          "key": "model",
-          "value": "Gradient boosting"
-        }
-      },
-      {
-        "id": "importance",
-        "kind": "bar",
-        "title": "What the model relies on",
-        "caption": "How much ranking quality drops when each reading is shuffled (permutation importance, held-out machines). Derived features are computed from the sensor readings.",
-        "format": "number",
-        "items": [
-          {
-            "label": "Rotational speed",
-            "value": 0.4444
-          },
-          {
-            "label": "Process − air temperature (derived)",
-            "value": 0.3506
-          },
-          {
-            "label": "Tool wear × torque (derived)",
-            "value": 0.2055
-          },
-          {
-            "label": "Mechanical power (derived)",
-            "value": 0.1518
-          },
-          {
-            "label": "Product quality variant",
-            "value": 0.0568
-          },
-          {
-            "label": "Tool wear",
-            "value": 0.051
-          },
-          {
-            "label": "Torque",
-            "value": 0.013
-          }
-        ]
-      },
-      {
-        "id": "rate-wear",
-        "kind": "bar",
-        "title": "Failure rate by tool wear",
-        "caption": "Failure rates stay between 2.2% and 2.9% until tools pass 200 minutes of use, then jump to 15.5%.",
-        "format": "percent",
-        "reference": {
-          "value": 0.0339,
-          "label": "Overall"
-        },
-        "items": [
-          {
-            "label": "0–50 min",
-            "value": 0.0217
-          },
-          {
-            "label": "50–100 min",
-            "value": 0.0233
-          },
-          {
-            "label": "100–150 min",
-            "value": 0.0218
-          },
-          {
-            "label": "150–200 min",
-            "value": 0.029
-          },
-          {
-            "label": "200–260 min",
-            "value": 0.1549
-          }
-        ]
-      }
+  "fields": [
+   {
+    "name": "machine_type",
+    "label": "Product quality variant",
+    "kind": "category",
+    "group": "machine",
+    "help": "Quality variant of the product being machined (low, medium or high).",
+    "optional": false,
+    "options": [
+     {
+      "value": "L",
+      "label": "Low"
+     },
+     {
+      "value": "M",
+      "label": "Medium"
+     },
+     {
+      "value": "H",
+      "label": "High"
+     }
     ]
+   },
+   {
+    "name": "air_temp_k",
+    "label": "Air temperature",
+    "kind": "number",
+    "group": "conditions",
+    "help": "Ambient air temperature.",
+    "optional": false,
+    "min": 294,
+    "max": 306,
+    "step": 0.1,
+    "unit": "K"
+   },
+   {
+    "name": "process_temp_k",
+    "label": "Process temperature",
+    "kind": "number",
+    "group": "conditions",
+    "help": "Temperature of the machining process.",
+    "optional": false,
+    "min": 304,
+    "max": 316,
+    "step": 0.1,
+    "unit": "K"
+   },
+   {
+    "name": "rotational_speed_rpm",
+    "label": "Rotational speed",
+    "kind": "number",
+    "group": "operation",
+    "help": "Spindle speed.",
+    "optional": false,
+    "min": 1100,
+    "max": 3000,
+    "step": 1,
+    "unit": "rpm"
+   },
+   {
+    "name": "torque_nm",
+    "label": "Torque",
+    "kind": "number",
+    "group": "operation",
+    "help": "Torque on the spindle.",
+    "optional": false,
+    "min": 0,
+    "max": 80,
+    "step": 0.1,
+    "unit": "Nm"
+   },
+   {
+    "name": "tool_wear_min",
+    "label": "Tool wear",
+    "kind": "number",
+    "group": "operation",
+    "help": "Minutes the current tool has been in use.",
+    "optional": false,
+    "min": 0,
+    "max": 260,
+    "step": 1,
+    "unit": "min"
+   }
+  ],
+  "model_version": "gradient-517c5bea",
+  "threshold": 0.003
+ },
+ "samples": [
+  {
+   "title": "Healthy: new tool, normal load",
+   "inputs": {
+    "machine_type": "L",
+    "air_temp_k": 297,
+    "process_temp_k": 307.7,
+    "rotational_speed_rpm": 1447,
+    "torque_nm": 46.4,
+    "tool_wear_min": 8
+   },
+   "actual": "kept running"
   },
-  "predictions": [
-    {
-      "task": "classification",
-      "score": 0.0001,
-      "score_label": "Failure risk",
-      "threshold": 0.003,
-      "positive": true,
-      "outcome": "Keep running",
-      "explanation": {
-        "kind": "contributions",
-        "title": "What moved the risk",
-        "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
-        "steps": []
-      },
-      "model_version": "gradient-517c5bea"
+  {
+   "title": "Healthy: worn tool, light load",
+   "inputs": {
+    "machine_type": "L",
+    "air_temp_k": 298.9,
+    "process_temp_k": 310.2,
+    "rotational_speed_rpm": 1411,
+    "torque_nm": 46.5,
+    "tool_wear_min": 202
+   },
+   "actual": "kept running"
+  },
+  {
+   "title": "False alarm: flagged, but it kept running",
+   "inputs": {
+    "machine_type": "M",
+    "air_temp_k": 297.2,
+    "process_temp_k": 308.2,
+    "rotational_speed_rpm": 1405,
+    "torque_nm": 42.5,
+    "tool_wear_min": 204
+   },
+   "actual": "kept running"
+  },
+  {
+   "title": "Failed: worn tool under high torque",
+   "inputs": {
+    "machine_type": "L",
+    "air_temp_k": 298,
+    "process_temp_k": 308.3,
+    "rotational_speed_rpm": 1362,
+    "torque_nm": 56.8,
+    "tool_wear_min": 216
+   },
+   "actual": "failed"
+  },
+  {
+   "title": "Failed: overheating (small temperature gap)",
+   "inputs": {
+    "machine_type": "M",
+    "air_temp_k": 301.7,
+    "process_temp_k": 309.8,
+    "rotational_speed_rpm": 1284,
+    "torque_nm": 68.2,
+    "tool_wear_min": 111
+   },
+   "actual": "failed"
+  },
+  {
+   "title": "Failed, but the model missed it",
+   "inputs": {
+    "machine_type": "M",
+    "air_temp_k": 299.7,
+    "process_temp_k": 309.3,
+    "rotational_speed_rpm": 1399,
+    "torque_nm": 41.9,
+    "tool_wear_min": 221
+   },
+   "actual": "failed"
+  }
+ ],
+ "explore": {
+  "contract": "ml-demo-kit/v1",
+  "headline": [
+   {
+    "label": "Maintenance cost saved",
+    "value": 0.6522,
+    "format": "percent",
+    "hint": "vs running machines to failure"
+   },
+   {
+    "label": "Failures caught",
+    "value": 0.9412,
+    "format": "percent",
+    "hint": "64 of 68 on held-out machines"
+   },
+   {
+    "label": "False alarms",
+    "value": 73.0,
+    "format": "number",
+    "hint": "inspections per 1,000 machines"
+   },
+   {
+    "label": "PR-AUC",
+    "value": 0.8955,
+    "format": "number",
+    "hint": "ranking quality for failures"
+   }
+  ],
+  "charts": [
+   {
+    "id": "savings",
+    "kind": "line",
+    "title": "Choosing the cutoff by maintenance cost",
+    "caption": "An inspection costs $1,000, repairing a machine caught in time $10,000, and replacing one that fails unnoticed $40,000: a miss costs 40x a false alarm. So the cheapest cutoff flags machines at very low risk. Drag the slider to see each model's savings at every cutoff (held-out machines).",
+    "x": {
+     "key": "per_1000",
+     "label": "Flag when failure risk exceeds (in 1,000)",
+     "scale": "log"
     },
-    {
-      "task": "classification",
-      "score": 0.0012,
-      "score_label": "Failure risk",
-      "threshold": 0.003,
-      "positive": true,
-      "outcome": "Keep running",
-      "explanation": {
-        "kind": "contributions",
-        "title": "What moved the risk",
-        "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
-        "steps": [
-          {
-            "label": "Air temperature: 298.9 K",
-            "field": "air_temp_k",
-            "value": 0.1
-          },
-          {
-            "label": "Rotational speed: 1,411 rpm",
-            "field": "rotational_speed_rpm",
-            "value": -0.1
-          },
-          {
-            "label": "Torque: 46.5 Nm",
-            "field": "torque_nm",
-            "value": -0.1
-          },
-          {
-            "label": "Tool wear: 202 min",
-            "field": "tool_wear_min",
-            "value": -0.1
-          }
-        ]
-      },
-      "model_version": "gradient-517c5bea"
+    "y": {
+     "label": "Cost saved vs running to failure",
+     "format": "percent"
     },
-    {
-      "task": "classification",
-      "score": 0.0147,
-      "score_label": "Failure risk",
+    "series": [
+     {
+      "key": "Logistic regression",
+      "label": "Logistic regression"
+     },
+     {
+      "key": "Neural network (MLP)",
+      "label": "Neural network (MLP)"
+     },
+     {
+      "key": "Gradient boosting, raw sensors only",
+      "label": "Gradient boosting, raw sensors only"
+     },
+     {
+      "key": "Gradient boosting",
+      "label": "Gradient boosting"
+     }
+    ],
+    "points": [
+     {
+      "per_1000": 2.0,
+      "Logistic regression": 0.254,
+      "Neural network (MLP)": 0.3871,
+      "Gradient boosting, raw sensors only": 0.6331,
+      "Gradient boosting": 0.6526
+     },
+     {
+      "per_1000": 4.0,
+      "Logistic regression": 0.3551,
+      "Neural network (MLP)": 0.468,
+      "Gradient boosting, raw sensors only": 0.6452,
+      "Gradient boosting": 0.6338
+     },
+     {
+      "per_1000": 6.0,
+      "Logistic regression": 0.4048,
+      "Neural network (MLP)": 0.4849,
+      "Gradient boosting, raw sensors only": 0.6283,
+      "Gradient boosting": 0.643
+     },
+     {
+      "per_1000": 8.0,
+      "Logistic regression": 0.4346,
+      "Neural network (MLP)": 0.5132,
+      "Gradient boosting, raw sensors only": 0.6327,
+      "Gradient boosting": 0.6496
+     },
+     {
+      "per_1000": 10.0,
+      "Logistic regression": 0.4592,
+      "Neural network (MLP)": 0.5349,
+      "Gradient boosting, raw sensors only": 0.6132,
+      "Gradient boosting": 0.6408
+     },
+     {
+      "per_1000": 12.0,
+      "Logistic regression": 0.4842,
+      "Neural network (MLP)": 0.5507,
+      "Gradient boosting, raw sensors only": 0.6154,
+      "Gradient boosting": 0.643
+     },
+     {
+      "per_1000": 14.0,
+      "Logistic regression": 0.4904,
+      "Neural network (MLP)": 0.5548,
+      "Gradient boosting, raw sensors only": 0.6184,
+      "Gradient boosting": 0.6452
+     },
+     {
+      "per_1000": 16.0,
+      "Logistic regression": 0.5114,
+      "Neural network (MLP)": 0.5673,
+      "Gradient boosting, raw sensors only": 0.6191,
+      "Gradient boosting": 0.6474
+     },
+     {
+      "per_1000": 18.0,
+      "Logistic regression": 0.5261,
+      "Neural network (MLP)": 0.5779,
+      "Gradient boosting, raw sensors only": 0.6202,
+      "Gradient boosting": 0.65
+     },
+     {
+      "per_1000": 20.0,
+      "Logistic regression": 0.5397,
+      "Neural network (MLP)": 0.5772,
+      "Gradient boosting, raw sensors only": 0.6206,
+      "Gradient boosting": 0.6404
+     },
+     {
+      "per_1000": 22.0,
+      "Logistic regression": 0.5357,
+      "Neural network (MLP)": 0.5824,
+      "Gradient boosting, raw sensors only": 0.6213,
+      "Gradient boosting": 0.6408
+     },
+     {
+      "per_1000": 24.0,
+      "Logistic regression": 0.5327,
+      "Neural network (MLP)": 0.5901,
+      "Gradient boosting, raw sensors only": 0.6103,
+      "Gradient boosting": 0.643
+     },
+     {
+      "per_1000": 26.0,
+      "Logistic regression": 0.5342,
+      "Neural network (MLP)": 0.5967,
+      "Gradient boosting, raw sensors only": 0.611,
+      "Gradient boosting": 0.6449
+     },
+     {
+      "per_1000": 28.0,
+      "Logistic regression": 0.5415,
+      "Neural network (MLP)": 0.5904,
+      "Gradient boosting, raw sensors only": 0.6118,
+      "Gradient boosting": 0.6463
+     },
+     {
+      "per_1000": 30.0,
+      "Logistic regression": 0.5393,
+      "Neural network (MLP)": 0.5934,
+      "Gradient boosting, raw sensors only": 0.6125,
+      "Gradient boosting": 0.6467
+     },
+     {
+      "per_1000": 32.0,
+      "Logistic regression": 0.5463,
+      "Neural network (MLP)": 0.596,
+      "Gradient boosting, raw sensors only": 0.6129,
+      "Gradient boosting": 0.6482
+     },
+     {
+      "per_1000": 34.0,
+      "Logistic regression": 0.5397,
+      "Neural network (MLP)": 0.589,
+      "Gradient boosting, raw sensors only": 0.614,
+      "Gradient boosting": 0.6493
+     },
+     {
+      "per_1000": 36.0,
+      "Logistic regression": 0.5441,
+      "Neural network (MLP)": 0.593,
+      "Gradient boosting, raw sensors only": 0.6147,
+      "Gradient boosting": 0.6382
+     },
+     {
+      "per_1000": 38.0,
+      "Logistic regression": 0.5276,
+      "Neural network (MLP)": 0.5838,
+      "Gradient boosting, raw sensors only": 0.6147,
+      "Gradient boosting": 0.639
+     },
+     {
+      "per_1000": 40.0,
+      "Logistic regression": 0.5324,
+      "Neural network (MLP)": 0.586,
+      "Gradient boosting, raw sensors only": 0.6147,
+      "Gradient boosting": 0.6397
+     },
+     {
+      "per_1000": 42.0,
+      "Logistic regression": 0.5338,
+      "Neural network (MLP)": 0.5787,
+      "Gradient boosting, raw sensors only": 0.6151,
+      "Gradient boosting": 0.6397
+     },
+     {
+      "per_1000": 44.0,
+      "Logistic regression": 0.5257,
+      "Neural network (MLP)": 0.5816,
+      "Gradient boosting, raw sensors only": 0.6151,
+      "Gradient boosting": 0.6404
+     },
+     {
+      "per_1000": 46.0,
+      "Logistic regression": 0.5305,
+      "Neural network (MLP)": 0.5724,
+      "Gradient boosting, raw sensors only": 0.6154,
+      "Gradient boosting": 0.6408
+     },
+     {
+      "per_1000": 48.0,
+      "Logistic regression": 0.532,
+      "Neural network (MLP)": 0.575,
+      "Gradient boosting, raw sensors only": 0.6044,
+      "Gradient boosting": 0.6412
+     },
+     {
+      "per_1000": 50.0,
+      "Logistic regression": 0.5357,
+      "Neural network (MLP)": 0.5662,
+      "Gradient boosting, raw sensors only": 0.6044,
+      "Gradient boosting": 0.6301
+     },
+     {
+      "per_1000": 60.0,
+      "Logistic regression": 0.5357,
+      "Neural network (MLP)": 0.5779,
+      "Gradient boosting, raw sensors only": 0.5945,
+      "Gradient boosting": 0.6206
+     },
+     {
+      "per_1000": 80.0,
+      "Logistic regression": 0.507,
+      "Neural network (MLP)": 0.5772,
+      "Gradient boosting, raw sensors only": 0.5971,
+      "Gradient boosting": 0.6114
+     },
+     {
+      "per_1000": 100.0,
+      "Logistic regression": 0.4835,
+      "Neural network (MLP)": 0.5717,
+      "Gradient boosting, raw sensors only": 0.5974,
+      "Gradient boosting": 0.6121
+     },
+     {
+      "per_1000": 120.0,
+      "Logistic regression": 0.4801,
+      "Neural network (MLP)": 0.5772,
+      "Gradient boosting, raw sensors only": 0.5875,
+      "Gradient boosting": 0.6151
+     },
+     {
+      "per_1000": 140.0,
+      "Logistic regression": 0.4187,
+      "Neural network (MLP)": 0.5816,
+      "Gradient boosting, raw sensors only": 0.5776,
+      "Gradient boosting": 0.6151
+     },
+     {
+      "per_1000": 160.0,
+      "Logistic regression": 0.3772,
+      "Neural network (MLP)": 0.575,
+      "Gradient boosting, raw sensors only": 0.5779,
+      "Gradient boosting": 0.6151
+     },
+     {
+      "per_1000": 180.0,
+      "Logistic regression": 0.3688,
+      "Neural network (MLP)": 0.5669,
+      "Gradient boosting, raw sensors only": 0.5676,
+      "Gradient boosting": 0.6154
+     },
+     {
+      "per_1000": 200.0,
+      "Logistic regression": 0.361,
+      "Neural network (MLP)": 0.5599,
+      "Gradient boosting, raw sensors only": 0.568,
+      "Gradient boosting": 0.6154
+     },
+     {
+      "per_1000": 220.0,
+      "Logistic regression": 0.3404,
+      "Neural network (MLP)": 0.5529,
+      "Gradient boosting, raw sensors only": 0.5687,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 240.0,
+      "Logistic regression": 0.3301,
+      "Neural network (MLP)": 0.5434,
+      "Gradient boosting, raw sensors only": 0.5581,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 260.0,
+      "Logistic regression": 0.3202,
+      "Neural network (MLP)": 0.5452,
+      "Gradient boosting, raw sensors only": 0.5588,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 280.0,
+      "Logistic regression": 0.2879,
+      "Neural network (MLP)": 0.5357,
+      "Gradient boosting, raw sensors only": 0.5588,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 300.0,
+      "Logistic regression": 0.2897,
+      "Neural network (MLP)": 0.5254,
+      "Gradient boosting, raw sensors only": 0.5482,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 320.0,
+      "Logistic regression": 0.2585,
+      "Neural network (MLP)": 0.5151,
+      "Gradient boosting, raw sensors only": 0.5485,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 340.0,
+      "Logistic regression": 0.2261,
+      "Neural network (MLP)": 0.4949,
+      "Gradient boosting, raw sensors only": 0.5489,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 360.0,
+      "Logistic regression": 0.2265,
+      "Neural network (MLP)": 0.4956,
+      "Gradient boosting, raw sensors only": 0.5489,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 380.0,
+      "Logistic regression": 0.2048,
+      "Neural network (MLP)": 0.4963,
+      "Gradient boosting, raw sensors only": 0.5493,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 400.0,
+      "Logistic regression": 0.2048,
+      "Neural network (MLP)": 0.4871,
+      "Gradient boosting, raw sensors only": 0.5493,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 420.0,
+      "Logistic regression": 0.1827,
+      "Neural network (MLP)": 0.4772,
+      "Gradient boosting, raw sensors only": 0.5496,
+      "Gradient boosting": 0.6165
+     },
+     {
+      "per_1000": 440.0,
+      "Logistic regression": 0.1717,
+      "Neural network (MLP)": 0.4662,
+      "Gradient boosting, raw sensors only": 0.5386,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 460.0,
+      "Logistic regression": 0.1614,
+      "Neural network (MLP)": 0.446,
+      "Gradient boosting, raw sensors only": 0.5386,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 480.0,
+      "Logistic regression": 0.1507,
+      "Neural network (MLP)": 0.4357,
+      "Gradient boosting, raw sensors only": 0.5386,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 500.0,
+      "Logistic regression": 0.1511,
+      "Neural network (MLP)": 0.4033,
+      "Gradient boosting, raw sensors only": 0.5386,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 520.0,
+      "Logistic regression": 0.129,
+      "Neural network (MLP)": 0.393,
+      "Gradient boosting, raw sensors only": 0.5386,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 540.0,
+      "Logistic regression": 0.1184,
+      "Neural network (MLP)": 0.3717,
+      "Gradient boosting, raw sensors only": 0.5386,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 560.0,
+      "Logistic regression": 0.1188,
+      "Neural network (MLP)": 0.3283,
+      "Gradient boosting, raw sensors only": 0.5386,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 580.0,
+      "Logistic regression": 0.1081,
+      "Neural network (MLP)": 0.3294,
+      "Gradient boosting, raw sensors only": 0.5279,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 600.0,
+      "Logistic regression": 0.1081,
+      "Neural network (MLP)": 0.2857,
+      "Gradient boosting, raw sensors only": 0.5279,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 620.0,
+      "Logistic regression": 0.1081,
+      "Neural network (MLP)": 0.2857,
+      "Gradient boosting, raw sensors only": 0.5066,
+      "Gradient boosting": 0.6169
+     },
+     {
+      "per_1000": 640.0,
+      "Logistic regression": 0.1081,
+      "Neural network (MLP)": 0.286,
+      "Gradient boosting, raw sensors only": 0.5066,
+      "Gradient boosting": 0.6059
+     },
+     {
+      "per_1000": 660.0,
+      "Logistic regression": 0.0971,
+      "Neural network (MLP)": 0.264,
+      "Gradient boosting, raw sensors only": 0.4956,
+      "Gradient boosting": 0.6059
+     },
+     {
+      "per_1000": 680.0,
+      "Logistic regression": 0.0974,
+      "Neural network (MLP)": 0.2309,
+      "Gradient boosting, raw sensors only": 0.4849,
+      "Gradient boosting": 0.6062
+     },
+     {
+      "per_1000": 700.0,
+      "Logistic regression": 0.0868,
+      "Neural network (MLP)": 0.2199,
+      "Gradient boosting, raw sensors only": 0.4853,
+      "Gradient boosting": 0.6062
+     },
+     {
+      "per_1000": 720.0,
+      "Logistic regression": 0.0761,
+      "Neural network (MLP)": 0.1978,
+      "Gradient boosting, raw sensors only": 0.4632,
+      "Gradient boosting": 0.6062
+     },
+     {
+      "per_1000": 740.0,
+      "Logistic regression": 0.0761,
+      "Neural network (MLP)": 0.1978,
+      "Gradient boosting, raw sensors only": 0.4632,
+      "Gradient boosting": 0.6066
+     },
+     {
+      "per_1000": 760.0,
+      "Logistic regression": 0.0765,
+      "Neural network (MLP)": 0.1868,
+      "Gradient boosting, raw sensors only": 0.4632,
+      "Gradient boosting": 0.6066
+     },
+     {
+      "per_1000": 780.0,
+      "Logistic regression": 0.0765,
+      "Neural network (MLP)": 0.1426,
+      "Gradient boosting, raw sensors only": 0.4522,
+      "Gradient boosting": 0.5846
+     },
+     {
+      "per_1000": 800.0,
+      "Logistic regression": 0.0654,
+      "Neural network (MLP)": 0.1316,
+      "Gradient boosting, raw sensors only": 0.4522,
+      "Gradient boosting": 0.5846
+     },
+     {
+      "per_1000": 820.0,
+      "Logistic regression": 0.0658,
+      "Neural network (MLP)": 0.1099,
+      "Gradient boosting, raw sensors only": 0.4301,
+      "Gradient boosting": 0.5846
+     },
+     {
+      "per_1000": 840.0,
+      "Logistic regression": 0.0658,
+      "Neural network (MLP)": 0.0768,
+      "Gradient boosting, raw sensors only": 0.4191,
+      "Gradient boosting": 0.5735
+     },
+     {
+      "per_1000": 860.0,
+      "Logistic regression": 0.0437,
+      "Neural network (MLP)": 0.0658,
+      "Gradient boosting, raw sensors only": 0.4191,
+      "Gradient boosting": 0.5735
+     },
+     {
+      "per_1000": 880.0,
+      "Logistic regression": 0.0441,
+      "Neural network (MLP)": 0.0437,
+      "Gradient boosting, raw sensors only": 0.375,
+      "Gradient boosting": 0.5625
+     },
+     {
+      "per_1000": 900.0,
+      "Logistic regression": 0.0221,
+      "Neural network (MLP)": 0.0437,
+      "Gradient boosting, raw sensors only": 0.3529,
+      "Gradient boosting": 0.5515
+     }
+    ]
+   },
+   {
+    "id": "threshold",
+    "kind": "threshold",
+    "title": "Inspections vs missed failures",
+    "caption": "Raise the cutoff and false alarms fall, but more failures slip through, and each miss costs $40,000.",
+    "positive_label": "Fails",
+    "negative_label": "Keeps running",
+    "selected": 0.003,
+    "selected_label": "chosen by cross-validation",
+    "sweep": [
+     {
+      "threshold": 0.001,
+      "tn": 1681,
+      "fp": 251,
+      "fn": 3,
+      "tp": 65
+     },
+     {
+      "threshold": 0.002,
+      "tn": 1757,
+      "fp": 175,
+      "fn": 3,
+      "tp": 65
+     },
+     {
       "threshold": 0.003,
-      "positive": false,
-      "outcome": "Flag for inspection",
-      "explanation": {
-        "kind": "contributions",
-        "title": "What moved the risk",
-        "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
-        "steps": [
-          {
-            "label": "Rotational speed: 1,405 rpm",
-            "field": "rotational_speed_rpm",
-            "value": -1.4
-          },
-          {
-            "label": "Tool wear: 204 min",
-            "field": "tool_wear_min",
-            "value": -1.4
-          },
-          {
-            "label": "Process temperature: 308.2 K",
-            "field": "process_temp_k",
-            "value": -1.1
-          },
-          {
-            "label": "Air temperature: 297.2 K",
-            "field": "air_temp_k",
-            "value": 1.0
-          },
-          {
-            "label": "Product quality variant: Medium",
-            "field": "machine_type",
-            "value": 0.4
-          }
-        ]
-      },
-      "model_version": "gradient-517c5bea"
-    },
-    {
-      "task": "classification",
-      "score": 1.0,
-      "score_label": "Failure risk",
-      "threshold": 0.003,
-      "positive": false,
-      "outcome": "Flag for inspection",
-      "explanation": {
-        "kind": "contributions",
-        "title": "What moved the risk",
-        "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
-        "steps": [
-          {
-            "label": "Tool wear: 216 min",
-            "field": "tool_wear_min",
-            "value": -100.0
-          },
-          {
-            "label": "Torque: 56.8 Nm",
-            "field": "torque_nm",
-            "value": -91.9
-          }
-        ]
-      },
-      "model_version": "gradient-517c5bea"
-    },
-    {
-      "task": "classification",
-      "score": 0.998,
-      "score_label": "Failure risk",
-      "threshold": 0.003,
-      "positive": false,
-      "outcome": "Flag for inspection",
-      "explanation": {
-        "kind": "contributions",
-        "title": "What moved the risk",
-        "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
-        "steps": [
-          {
-            "label": "Air temperature: 301.7 K",
-            "field": "air_temp_k",
-            "value": -35.7
-          },
-          {
-            "label": "Torque: 68.2 Nm",
-            "field": "torque_nm",
-            "value": -8.1
-          }
-        ]
-      },
-      "model_version": "gradient-517c5bea"
-    },
-    {
-      "task": "classification",
-      "score": 0.0026,
-      "score_label": "Failure risk",
-      "threshold": 0.003,
-      "positive": true,
-      "outcome": "Keep running",
-      "explanation": {
-        "kind": "contributions",
-        "title": "What moved the risk",
-        "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
-        "steps": [
-          {
-            "label": "Product quality variant: Medium",
-            "field": "machine_type",
-            "value": 0.3
-          },
-          {
-            "label": "Torque: 41.9 Nm",
-            "field": "torque_nm",
-            "value": 0.2
-          },
-          {
-            "label": "Tool wear: 221 min",
-            "field": "tool_wear_min",
-            "value": -0.2
-          },
-          {
-            "label": "Air temperature: 299.7 K",
-            "field": "air_temp_k",
-            "value": -0.1
-          },
-          {
-            "label": "Process temperature: 309.3 K",
-            "field": "process_temp_k",
-            "value": 0.1
-          },
-          {
-            "label": "Rotational speed: 1,399 rpm",
-            "field": "rotational_speed_rpm",
-            "value": -0.1
-          }
-        ]
-      },
-      "model_version": "gradient-517c5bea"
+      "tn": 1786,
+      "fp": 146,
+      "fn": 4,
+      "tp": 64
+     },
+     {
+      "threshold": 0.005,
+      "tn": 1810,
+      "fp": 122,
+      "fn": 6,
+      "tp": 62
+     },
+     {
+      "threshold": 0.01,
+      "tn": 1845,
+      "fp": 87,
+      "fn": 7,
+      "tp": 61
+     },
+     {
+      "threshold": 0.02,
+      "tn": 1874,
+      "fp": 58,
+      "fn": 8,
+      "tp": 60
+     },
+     {
+      "threshold": 0.05,
+      "tn": 1906,
+      "fp": 26,
+      "fn": 10,
+      "tp": 58
+     },
+     {
+      "threshold": 0.1,
+      "tn": 1917,
+      "fp": 15,
+      "fn": 12,
+      "tp": 56
+     },
+     {
+      "threshold": 0.2,
+      "tn": 1926,
+      "fp": 6,
+      "fn": 12,
+      "tp": 56
+     },
+     {
+      "threshold": 0.3,
+      "tn": 1929,
+      "fp": 3,
+      "fn": 12,
+      "tp": 56
+     },
+     {
+      "threshold": 0.5,
+      "tn": 1930,
+      "fp": 2,
+      "fn": 12,
+      "tp": 56
+     },
+     {
+      "threshold": 0.7,
+      "tn": 1931,
+      "fp": 1,
+      "fn": 13,
+      "tp": 55
+     },
+     {
+      "threshold": 0.9,
+      "tn": 1932,
+      "fp": 0,
+      "fn": 18,
+      "tp": 50
+     }
+    ]
+   },
+   {
+    "id": "models",
+    "kind": "table",
+    "title": "Which model saves the most?",
+    "caption": "Each model at its own cost-optimal cutoff, chosen by 5-fold cross-validation; held-out test results. Adding physics features (power, temperature gap, wear × torque) lifted gradient boosting's PR-AUC from 0.85 to 0.90.",
+    "columns": [
+     {
+      "key": "model",
+      "label": "Model"
+     },
+     {
+      "key": "savings_vs_no_model",
+      "label": "Cost saved",
+      "format": "percent"
+     },
+     {
+      "key": "recall",
+      "label": "Failures caught",
+      "format": "percent"
+     },
+     {
+      "key": "false_alarms_per_1000",
+      "label": "False alarms / 1,000",
+      "format": "number"
+     },
+     {
+      "key": "pr_auc",
+      "label": "PR-AUC",
+      "format": "number"
+     }
+    ],
+    "rows": [
+     {
+      "model": "Logistic regression",
+      "recall": 0.8235,
+      "precision": 0.186,
+      "roc_auc": 0.9303,
+      "pr_auc": 0.4603,
+      "false_alarms_per_1000": 122.5,
+      "cost_per_1000": 642500,
+      "savings_vs_no_model": 0.5276,
+      "tn": 1687,
+      "fp": 245,
+      "fn": 12,
+      "tp": 56,
+      "threshold": 0.038
+     },
+     {
+      "model": "Neural network (MLP)",
+      "recall": 0.8971,
+      "precision": 0.2013,
+      "roc_auc": 0.9632,
+      "pr_auc": 0.6681,
+      "false_alarms_per_1000": 121.0,
+      "cost_per_1000": 566000,
+      "savings_vs_no_model": 0.5838,
+      "tn": 1690,
+      "fp": 242,
+      "fn": 7,
+      "tp": 61,
+      "threshold": 0.038
+     },
+     {
+      "model": "Gradient boosting",
+      "recall": 0.9412,
+      "precision": 0.3048,
+      "roc_auc": 0.9784,
+      "pr_auc": 0.8955,
+      "false_alarms_per_1000": 73.0,
+      "cost_per_1000": 473000,
+      "savings_vs_no_model": 0.6522,
+      "tn": 1786,
+      "fp": 146,
+      "fn": 4,
+      "tp": 64,
+      "threshold": 0.003
+     },
+     {
+      "model": "Gradient boosting, raw sensors only",
+      "recall": 0.9118,
+      "precision": 0.31,
+      "roc_auc": 0.975,
+      "pr_auc": 0.8545,
+      "false_alarms_per_1000": 69.0,
+      "cost_per_1000": 499000,
+      "savings_vs_no_model": 0.6331,
+      "tn": 1794,
+      "fp": 138,
+      "fn": 6,
+      "tp": 62,
+      "threshold": 0.002
+     }
+    ],
+    "highlight": {
+     "key": "model",
+     "value": "Gradient boosting"
     }
+   },
+   {
+    "id": "importance",
+    "kind": "bar",
+    "title": "What the model relies on",
+    "caption": "How much ranking quality drops when each reading is shuffled (permutation importance, held-out machines). Derived features are computed from the sensor readings.",
+    "format": "number",
+    "items": [
+     {
+      "label": "Rotational speed",
+      "value": 0.4444
+     },
+     {
+      "label": "Process − air temperature (derived)",
+      "value": 0.3506
+     },
+     {
+      "label": "Tool wear × torque (derived)",
+      "value": 0.2055
+     },
+     {
+      "label": "Mechanical power (derived)",
+      "value": 0.1518
+     },
+     {
+      "label": "Product quality variant",
+      "value": 0.0568
+     },
+     {
+      "label": "Tool wear",
+      "value": 0.051
+     },
+     {
+      "label": "Torque",
+      "value": 0.013
+     }
+    ]
+   },
+   {
+    "id": "rate-wear",
+    "kind": "bar",
+    "title": "Failure rate by tool wear",
+    "caption": "Failure rates stay between 2.2% and 2.9% until tools pass 200 minutes of use, then jump to 15.5%.",
+    "format": "percent",
+    "reference": {
+     "value": 0.0339,
+     "label": "Overall"
+    },
+    "items": [
+     {
+      "label": "0–50 min",
+      "value": 0.0217
+     },
+     {
+      "label": "50–100 min",
+      "value": 0.0233
+     },
+     {
+      "label": "100–150 min",
+      "value": 0.0218
+     },
+     {
+      "label": "150–200 min",
+      "value": 0.029
+     },
+     {
+      "label": "200–260 min",
+      "value": 0.1549
+     }
+    ]
+   }
   ]
+ },
+ "predictions": [
+  {
+   "task": "classification",
+   "score": 0.0001,
+   "score_label": "Failure risk",
+   "threshold": 0.003,
+   "positive": true,
+   "outcome": "Keep running",
+   "explanation": {
+    "kind": "contributions",
+    "title": "What moved the risk",
+    "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
+    "steps": []
+   },
+   "model_version": "gradient-517c5bea"
+  },
+  {
+   "task": "classification",
+   "score": 0.0012,
+   "score_label": "Failure risk",
+   "threshold": 0.003,
+   "positive": true,
+   "outcome": "Keep running",
+   "explanation": {
+    "kind": "contributions",
+    "title": "What moved the risk",
+    "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
+    "steps": [
+     {
+      "label": "Air temperature: 298.9 K",
+      "field": "air_temp_k",
+      "value": 0.1
+     },
+     {
+      "label": "Rotational speed: 1,411 rpm",
+      "field": "rotational_speed_rpm",
+      "value": -0.1
+     },
+     {
+      "label": "Torque: 46.5 Nm",
+      "field": "torque_nm",
+      "value": -0.1
+     },
+     {
+      "label": "Tool wear: 202 min",
+      "field": "tool_wear_min",
+      "value": -0.1
+     }
+    ]
+   },
+   "model_version": "gradient-517c5bea"
+  },
+  {
+   "task": "classification",
+   "score": 0.0147,
+   "score_label": "Failure risk",
+   "threshold": 0.003,
+   "positive": false,
+   "outcome": "Flag for inspection",
+   "explanation": {
+    "kind": "contributions",
+    "title": "What moved the risk",
+    "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
+    "steps": [
+     {
+      "label": "Rotational speed: 1,405 rpm",
+      "field": "rotational_speed_rpm",
+      "value": -1.4
+     },
+     {
+      "label": "Tool wear: 204 min",
+      "field": "tool_wear_min",
+      "value": -1.4
+     },
+     {
+      "label": "Process temperature: 308.2 K",
+      "field": "process_temp_k",
+      "value": -1.1
+     },
+     {
+      "label": "Air temperature: 297.2 K",
+      "field": "air_temp_k",
+      "value": 1.0
+     },
+     {
+      "label": "Product quality variant: Medium",
+      "field": "machine_type",
+      "value": 0.4
+     }
+    ]
+   },
+   "model_version": "gradient-517c5bea"
+  },
+  {
+   "task": "classification",
+   "score": 1.0,
+   "score_label": "Failure risk",
+   "threshold": 0.003,
+   "positive": false,
+   "outcome": "Flag for inspection",
+   "explanation": {
+    "kind": "contributions",
+    "title": "What moved the risk",
+    "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
+    "steps": [
+     {
+      "label": "Tool wear: 216 min",
+      "field": "tool_wear_min",
+      "value": -100.0
+     },
+     {
+      "label": "Torque: 56.8 Nm",
+      "field": "torque_nm",
+      "value": -91.9
+     }
+    ]
+   },
+   "model_version": "gradient-517c5bea"
+  },
+  {
+   "task": "classification",
+   "score": 0.998,
+   "score_label": "Failure risk",
+   "threshold": 0.003,
+   "positive": false,
+   "outcome": "Flag for inspection",
+   "explanation": {
+    "kind": "contributions",
+    "title": "What moved the risk",
+    "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
+    "steps": [
+     {
+      "label": "Air temperature: 301.7 K",
+      "field": "air_temp_k",
+      "value": -35.7
+     },
+     {
+      "label": "Torque: 68.2 Nm",
+      "field": "torque_nm",
+      "value": -8.1
+     }
+    ]
+   },
+   "model_version": "gradient-517c5bea"
+  },
+  {
+   "task": "classification",
+   "score": 0.0026,
+   "score_label": "Failure risk",
+   "threshold": 0.003,
+   "positive": true,
+   "outcome": "Keep running",
+   "explanation": {
+    "kind": "contributions",
+    "title": "What moved the risk",
+    "value_label": "How much each reading lowers (+) or raises (−) the failure risk, in percentage points, compared with a typical machine",
+    "steps": [
+     {
+      "label": "Product quality variant: Medium",
+      "field": "machine_type",
+      "value": 0.3
+     },
+     {
+      "label": "Torque: 41.9 Nm",
+      "field": "torque_nm",
+      "value": 0.2
+     },
+     {
+      "label": "Tool wear: 221 min",
+      "field": "tool_wear_min",
+      "value": -0.2
+     },
+     {
+      "label": "Air temperature: 299.7 K",
+      "field": "air_temp_k",
+      "value": -0.1
+     },
+     {
+      "label": "Process temperature: 309.3 K",
+      "field": "process_temp_k",
+      "value": 0.1
+     },
+     {
+      "label": "Rotational speed: 1,399 rpm",
+      "field": "rotational_speed_rpm",
+      "value": -0.1
+     }
+    ]
+   },
+   "model_version": "gradient-517c5bea"
+  }
+ ]
 }
